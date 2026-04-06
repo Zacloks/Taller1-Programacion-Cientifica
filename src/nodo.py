@@ -14,7 +14,7 @@ class Nodo:
         self.enlacesSalida.add(idDestino)
 
     def agregarCategoria(self, categoria):
-        pass
+        self.categorias.add(categoria)
 
     def gradoEntrada(self):
         return len(self.gradoEntrada)
