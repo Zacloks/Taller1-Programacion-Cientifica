@@ -12,8 +12,8 @@ class Grafo:
     def agregarConexion(self, idOrigen, idDestino):
         origen = self.agregarNodo(idOrigen)
         destino = self.agregarNodo(idDestino)
-        origen.agregarEnlaceSalida(destino)
-        destino.agregarEnlaceEntrada(origen)
+        origen.agregarEnlaceSalida(idDestino)
+        destino.agregarEnlaceEntrada(idOrigen)
 
     def obtenerMayoresConexiones(self, n =10):
         lista_grados_enlaces =  []
@@ -26,5 +26,3 @@ class Grafo:
         for grado, nodo in lista_grados_enlaces:
             lista_resultado.append(nodo)
         return lista_resultado[:n]
-
-

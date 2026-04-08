@@ -24,7 +24,7 @@ class Nodo:
     
     def __str__(self):
         if self.nombre:
-            return f"Nodo con id={self.id} y nombre={self.nombre})"
+            return f"Nodo con id={self.id} y nombre={self.nombre}"
         else:
-            return f"Nodo con id={self.id} y sin nombre)"
+            return f"Nodo con id={self.id} y sin nombre"
     
