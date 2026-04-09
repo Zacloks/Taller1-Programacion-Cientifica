@@ -109,4 +109,60 @@ class Grafo:
                     if vecino not in visitados:
                         pila.append(vecino)
                         
-        return ordenVisita     
+        return ordenVisita
+    
+    #Funcion relacionada a exploracion de conectividad entre articulos
+    def esAlcanzable(self, idOrigen, idDestino): #Ver si de un articulo se puede llegar a otro
+        
+        if idOrigen not in self.articulos or idDestino not in self.articulos:
+            return False
+        
+        visitados = set()
+        cola = deque([idOrigen])
+        
+        while cola:
+            actual = cola.pop()
+            
+            if actual == idDestino:
+                return True
+
+            for vecino in self.articulos[idOrigen].enlacesSalida:
+                if vecino not in visitados:
+                    visitados.add(vecino)
+                    cola.append(vecino)
+        
+        return False
+    
+    #Temporal: Falta aplicarle mejoras para encontrar caminos mas interesantes
+    def encontrarCaminosSimples(self, idOrigen, idDestino): 
+        
+        if idOrigen not in self.articulos or idDestino not in self.articulos:
+            return []
+        
+        cola = deque([idOrigen])
+        padres = {idOrigen : None}
+        
+        while cola:
+            actual = cola.popleft()
+            
+            if actual == idDestino:
+                break
+            
+            for vecino in self.articulos[idOrigen].enlacesSalida:
+                if vecino not in padres:
+                    padres[vecino] = actual
+                    cola.append(vecino)
+                    
+        if idDestino not in padres:
+            return []
+        
+        camino = []
+        actual = idDestino
+
+        while actual is not None:
+            camino.append(actual)
+            actual = padres[actual]
+        
+        camino.reverse()
+        
+        return camino        
