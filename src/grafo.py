@@ -1,4 +1,5 @@
 from src.nodo import Nodo
+from collections import deque
 
 class Grafo:
     def __init__(self):
@@ -60,3 +61,52 @@ class Grafo:
         grado_maximo =  grados_ordenados[-1]
         print(f"Grado maximo: {grado_maximo}, Cantidad articulos: {distri[grado_maximo]}")
         return distri
+    
+    def bfs(self, idInicio):
+        
+        if idInicio not in self.articulos:
+            return []
+        
+        visitados = set()
+        cola = deque([idInicio])
+        ordenVisita = []
+        
+        while cola:
+            actual = cola.popleft()
+            
+            if actual not in visitados:
+                visitados.add(actual)
+                ordenVisita.append(actual)
+                
+                for vecino in self.articulos[actual].enlacesSalida:
+                    if vecino not in visitados:
+                        cola.append(vecino)
+        
+        return ordenVisita
+    
+    
+    def dfs(self, idInicio):
+        
+        if idInicio not in self.articulos:
+            return[]
+        
+        visitados = set()
+        pila = [idInicio]
+        ordenVisita = []
+        
+        while pila:
+            actual = pila.pop()
+            
+            if actual not in visitados:
+                visitados.add(actual)
+                ordenVisita.append(actual)
+                
+                vecinos = list(self.articulos[actual].enlacesSalida)
+                vecinos.sort()
+                vecinos.reverse()
+                
+                for vecino in vecinos:
+                    if vecino not in visitados:
+                        pila.append(vecino)
+                        
+        return ordenVisita     
