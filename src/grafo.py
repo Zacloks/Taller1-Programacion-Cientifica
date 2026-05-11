@@ -126,7 +126,7 @@ class Grafo:
             if actual == idDestino:
                 return True
 
-            for vecino in self.articulos[idOrigen].enlacesSalida:
+            for vecino in self.articulos[actual].enlacesSalida:
                 if vecino not in visitados:
                     visitados.add(vecino)
                     cola.append(vecino)
@@ -148,7 +148,7 @@ class Grafo:
             if actual == idDestino:
                 break
             
-            for vecino in self.articulos[idOrigen].enlacesSalida:
+            for vecino in self.articulos[actual].enlacesSalida:
                 if vecino not in padres:
                     padres[vecino] = actual
                     cola.append(vecino)
@@ -165,4 +165,37 @@ class Grafo:
         
         camino.reverse()
         
-        return camino        
+        return camino
+    
+    #PageRank
+    def pageRank(self, iteraciones = 20, damping = 0.85):
+        cantidadNodos = len(self.articulos)
+        
+        if cantidadNodos == 0:
+            return {}
+        
+        puntajes = {}
+        valorInicial = 1.0 / cantidadNodos
+        
+        for idNodo in self.articulos:
+            puntajes[idNodo] = valorInicial
+        
+        for _ in range(iteraciones):
+            nuevosPuntajes = {}
+            
+            for idNodo in self.articulos:
+                nuevosPuntajes[idNodo] = (1.0 - damping) / cantidadNodos
+            
+            for idNodo, nodo in self.articulos.items():
+                
+                if nodo.gradoSalida() == 0:
+                    continue
+                
+                aporte = puntajes[idNodo] / nodo.gradoSalida()
+                
+                for vecino in nodo.enlacesSalida:
+                    nuevosPuntajes[vecino] += damping * aporte
+                
+            puntajes = nuevosPuntajes
+        
+        return puntajes
