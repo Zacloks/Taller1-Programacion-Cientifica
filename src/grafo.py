@@ -33,7 +33,7 @@ class Grafo:
 
     def topPorGradoEntrada(self, cantidad = 10):
         lista = list(self.articulos.values())
-        lista.sort(key = lambda nodo: nodo.gradoEntrado(), reverse = True)
+        lista.sort(key = lambda nodo: nodo.gradoEntrada(), reverse = True)
         return lista[:cantidad]
     
     def topPorGradoSalida(self, cantidad = 10):
