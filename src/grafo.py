@@ -16,6 +16,31 @@ class Grafo:
         origen.agregarEnlaceSalida(idDestino)
         destino.agregarEnlaceEntrada(idOrigen)
 
+    def cantidadArticulos(self):
+        return len(self.articulos)
+    
+    def cantidadEnlaces(self):
+        totalEnlaces = 0
+        
+        for nodo in self.articulos.values():
+            totalEnlaces += nodo.gradoSalida()
+        
+        return totalEnlaces
+
+    def resumen(self):
+        return {"Articulos": self.cantidadArticulos, 
+                "Enlaces": self.cantidadEnlaces}
+
+    def topPorGradoEntrada(self, cantidad = 10):
+        lista = list(self.articulos.values())
+        lista.sort(key = lambda nodo: nodo.gradoEntrado(), reverse = True)
+        return lista[:cantidad]
+    
+    def topPorGradoSalida(self, cantidad = 10):
+        lista = list(self.cantidadArticulos.values())
+        lista.sort(key = lambda nodo: nodo.gradoSalida(), reverse = True)
+        return lista[:cantidad]
+    
     def obtenerMayoresConexiones(self, n =10, tipo = "entrada"):
         lista_grados_enlaces =  []
         for nodo in self.articulos.values():
