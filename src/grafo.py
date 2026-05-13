@@ -231,3 +231,21 @@ class Grafo:
             puntajes = nuevosPuntajes
         
         return puntajes
+    # Relacion de las categorias con los articulos mas importantes
+    def ranking_categorias(self, puntajes_pagerank, top_n=10):
+        cat_stats = {} 
+    
+        for id_art, articulo in self.articulos.items():
+            score = puntajes_pagerank.get(id_art, 0)
+            for categoria in articulo.categorias:
+                if categoria not in cat_stats:
+                    cat_stats[categoria] = []
+                cat_stats[categoria].append(score)
+                
+        ranking = []
+        for nombre_cat, scores in cat_stats.items():
+            promedio = sum(scores) / len(scores) if scores else 0
+            ranking.append((nombre_cat, promedio, len(scores)))
+            
+        ranking.sort(key=lambda x: x[1], reverse=True)
+        return ranking[:top_n]
