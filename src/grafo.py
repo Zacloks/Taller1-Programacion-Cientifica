@@ -23,6 +23,31 @@ class Grafo:
             self.categorias[nombreCategoria] = []
         self.categorias[nombreCategoria].append(nodo)
 
+    def cantidadArticulos(self):
+        return len(self.articulos)
+    
+    def cantidadEnlaces(self):
+        totalEnlaces = 0
+        
+        for nodo in self.articulos.values():
+            totalEnlaces += nodo.gradoSalida()
+        
+        return totalEnlaces
+
+    def resumen(self):
+        return {"Articulos": self.cantidadArticulos(), 
+                "Enlaces": self.cantidadEnlaces()}
+
+    def topPorGradoEntrada(self, cantidad = 10):
+        lista = list(self.articulos.values())
+        lista.sort(key = lambda nodo: nodo.gradoEntrada(), reverse = True)
+        return lista[:cantidad]
+    
+    def topPorGradoSalida(self, cantidad = 10):
+        lista = list(self.articulos.values())
+        lista.sort(key = lambda nodo: nodo.gradoSalida(), reverse = True)
+        return lista[:cantidad]
+    
     def obtenerMayoresConexiones(self, n =10, tipo = "entrada"):
         lista_grados_enlaces =  []
         for nodo in self.articulos.values():
@@ -172,4 +197,37 @@ class Grafo:
         
         camino.reverse()
         
-        return camino        
+        return camino
+    
+    #PageRank
+    def pageRank(self, iteraciones = 20, damping = 0.85):
+        cantidadNodos = len(self.articulos)
+        
+        if cantidadNodos == 0:
+            return {}
+        
+        puntajes = {}
+        valorInicial = 1.0 / cantidadNodos
+        
+        for idNodo in self.articulos:
+            puntajes[idNodo] = valorInicial
+        
+        for _ in range(iteraciones):
+            nuevosPuntajes = {}
+            
+            for idNodo in self.articulos:
+                nuevosPuntajes[idNodo] = (1.0 - damping) / cantidadNodos
+            
+            for idNodo, nodo in self.articulos.items():
+                
+                if nodo.gradoSalida() == 0:
+                    continue
+                
+                aporte = puntajes[idNodo] / nodo.gradoSalida()
+                
+                for vecino in nodo.enlacesSalida:
+                    nuevosPuntajes[vecino] += damping * aporte
+                
+            puntajes = nuevosPuntajes
+        
+        return puntajes
