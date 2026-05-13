@@ -4,6 +4,7 @@ from collections import deque
 class Grafo:
     def __init__(self):
         self.articulos = {}
+        self.categorias = {}
     
     def agregarNodo(self, id):
         if id not in self.articulos:
@@ -15,6 +16,12 @@ class Grafo:
         destino = self.agregarNodo(idDestino)
         origen.agregarEnlaceSalida(idDestino)
         destino.agregarEnlaceEntrada(idOrigen)
+
+    def agregarCategoria(self, nodo, nombreCategoria):
+        nodo.agregarCategoria(nombreCategoria)
+        if nombreCategoria not in self.categorias:
+            self.categorias[nombreCategoria] = []
+        self.categorias[nombreCategoria].append(nodo)
 
     def obtenerMayoresConexiones(self, n =10, tipo = "entrada"):
         lista_grados_enlaces =  []
@@ -121,12 +128,12 @@ class Grafo:
         cola = deque([idOrigen])
         
         while cola:
-            actual = cola.pop()
+            actual = cola.popleft()
             
             if actual == idDestino:
                 return True
 
-            for vecino in self.articulos[idOrigen].enlacesSalida:
+            for vecino in self.articulos[actual].enlacesSalida:
                 if vecino not in visitados:
                     visitados.add(vecino)
                     cola.append(vecino)
@@ -148,7 +155,7 @@ class Grafo:
             if actual == idDestino:
                 break
             
-            for vecino in self.articulos[idOrigen].enlacesSalida:
+            for vecino in self.articulos[actual].enlacesSalida:
                 if vecino not in padres:
                     padres[vecino] = actual
                     cola.append(vecino)
