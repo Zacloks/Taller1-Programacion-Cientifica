@@ -26,20 +26,20 @@ Se utiliza el dataset **Wiki-Topcats**, disponible en [Kaggle](https://www.kaggl
 ## Instalación y Uso
 
 ### Con conda
-\```bash
+```bash
 conda env create -f environment.yml
 conda activate taller1
-\```
+```
 
 ### Con pip
-\```bash
+```bash
 pip install -r requirements.txt
-\```
+```
 
 ### Ejecutar
-\```bash
+```bash
 python main.py
-\```
+```
 
 ## Requisitos
 - Python 3.11
