@@ -81,9 +81,6 @@ class Grafo:
 
         grados_ordenados = list(distri.keys())
         grados_ordenados.sort()
-
-        print(f"---Distribución:---")
-        print(f"Cantidad de Articulos analizados: {nodos_totales}")
         
         for grad in grados_ordenados[:10]:
             cantidad = distri[grad]
