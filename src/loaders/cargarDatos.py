@@ -1,10 +1,10 @@
 from pathlib import Path
-from src.grafo import Grafo
+from src.modelos.grafo import Grafo
 
 class CargarDatos:
     def __init__(self, ruta = None):
         if ruta is None:
-            self.ruta = Path(__file__).resolve().parent.parent / "data"
+            self.ruta = Path(__file__).resolve().parent.parent.parent / "data"
         else:
             self.ruta = Path(ruta)
 

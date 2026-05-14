@@ -1,4 +1,4 @@
-from src.nodo import Nodo
+from src.modelos.nodo import Nodo
 from collections import deque
 
 class Grafo:

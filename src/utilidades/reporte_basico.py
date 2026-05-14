@@ -1,10 +1,10 @@
 from pathlib import Path
 
-class reporteBasico:
+class ReporteBasico:
     
     def __init__(self, carpetaResultados = None):
         if carpetaResultados is None:
-            self.carpetaResultados = Path(__file__).resolve().parent.parent / "results"
+            self.carpetaResultados = Path(__file__).resolve().parent.parent.parent / "results"
         else:
             self.carpetaResultados = Path(carpetaResultados)
 
@@ -48,8 +48,7 @@ class reporteBasico:
         topEntrada = self.extraerTop(grafo.topPorGradoEntrada(10), "entrada")
         topSalida = self.extraerTop(grafo.topPorGradoSalida(10), "salida")
         
-        print("--- Resumen del Grafo ---")
-        print("--" * 5)
+        print("===Resumen del Grafo===")
         print(f"Cantidad de Articulos: {resumenGrafo['Articulos']}")
         print(f"Cantidad de Enlaces: {resumenGrafo['Enlaces']}")
         

@@ -208,3 +208,5 @@ __marimo__/
 
 data/*.txt
 data/*.mtx
+
+.vscode/

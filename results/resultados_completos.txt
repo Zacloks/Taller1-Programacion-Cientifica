@@ -1,0 +1,70 @@
+Resultados Completos - Red de Wikipedia
+==================================================
+
+=== Resumen del Grafo ===
+Artículos: 1791489
+Enlaces: 28511807
+
+=== Top 10 por Grado de Entrada ===
+  1. United States -> 238040
+  2. France -> 89014
+  3. United Kingdom -> 70061
+  4. Canada -> 61533
+  5. Germany -> 57275
+  6. World War II -> 52581
+  7. Australia -> 47089
+  8. English language -> 45428
+  9. Italy -> 45323
+  10. Association football -> 44023
+
+=== Top 10 por Grado de Salida ===
+  1. List of American television programs by date -> 3907
+  2. List of English writers -> 3316
+  3. List of populated places in Serbia -> 3125
+  4. List of populated places in Serbia (alphabetic) -> 3092
+  5. List of film score composers -> 2676
+  6. List of Test cricketers -> 2601
+  7. List of J. League players -> 2585
+  8. List of people from Texas -> 2534
+  9. 2010 in film -> 2405
+  10. List of Russian people -> 2302
+
+=== Top 10 por PageRank ===
+  1. United States -> 0.005517
+  2. France -> 0.002367
+  3. United Kingdom -> 0.002159
+  4. Canada -> 0.001722
+  5. Germany -> 0.001670
+  6. World War II -> 0.001501
+  7. English language -> 0.001370
+  8. Australia -> 0.001309
+  9. Italy -> 0.001294
+  10. India -> 0.001198
+
+=== Top 10 Categorías por PageRank Promedio ===
+  Member_states_of_the_United_Nations: 0.000233 (195 artículos)
+  Republics: 0.000161 (119 artículos)
+  Former_British_colonies: 0.000143 (130 artículos)
+  Country_subdivisions_of_Europe: 0.000033 (115 artículos)
+  Wars_involving_the_United_Kingdom: 0.000031 (107 artículos)
+  Divided_regions: 0.000027 (153 artículos)
+  Wars_involving_France: 0.000025 (118 artículos)
+  NUTS_2_statistical_regions_of_the_European_Union: 0.000022 (162 artículos)
+  English_language: 0.000022 (95 artículos)
+  Greek_loanwords: 0.000020 (589 artículos)
+
+=== Top 10 Categorías por Cantidad de Artículos ===
+  Living_people: 418223 artículos
+  Year_of_birth_missing_(living_people): 34721 artículos
+  English-language_films: 22699 artículos
+  American_films: 15302 artículos
+  American_film_actors: 13938 artículos
+  Main_Belt_asteroids: 13704 artículos
+  Black-and-white_films: 12174 artículos
+  American_television_actors: 11661 artículos
+  The_Football_League_players: 9467 artículos
+  English_footballers: 9237 artículos
+
+=== Conectividad ===
+Camino 1 -> 500: 1 -> 10773 -> 504022 -> 504419 -> 511830 -> 603 -> 483 -> 500
+Longitud: 7 saltos
