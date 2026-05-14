@@ -37,7 +37,7 @@ class reporteBasico:
     def imprimirTop(self, titulo, items):
         print()
         print(titulo)
-        print("-" * titulo)
+        print("-" * len(titulo))
         
         for posicion, item in enumerate(items, start = 1):
             print(f"{posicion}. {item['nombre']} -> {item['valor']}")
@@ -54,7 +54,7 @@ class reporteBasico:
         print(f"Cantidad de Enlaces: {resumenGrafo['Enlaces']}")
         
         self.imprimirTop("Top 10 por grado de Entrada", topEntrada)
-        self.imprimirTop("Top 1o por grados de Salida", topSalida)
+        self.imprimirTop("Top 10 por grados de Salida", topSalida)
         
     def exportarTexto(self, rutaSalida, resumen, topEntrada, topSalida):
         lineas = ["Reporte Basico de Wikipedia",

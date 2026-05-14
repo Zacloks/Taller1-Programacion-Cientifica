@@ -9,18 +9,21 @@ class CargarDatos:
             self.ruta = Path(ruta)
 
     def leerConexiones(self, grafo):
+        encabezado_saltado = False
         with open(self.ruta / "wiki-topcats.mtx", encoding= "utf-8") as arch:
             for linea in arch:
 
                 linea = linea.strip()
-                partes = linea.split()
-
-                if not linea or linea.startswith("%") or len(partes) == 3:
+                if not linea or linea.startswith("%"):
                     continue
-
+                partes = linea.split()
+            
+                if not encabezado_saltado:
+                    encabezado_saltado = True
+                    continue
+            
                 id_origen = int(partes[0])
                 id_destino = int(partes[1])
-
                 grafo.agregarConexion(id_origen, id_destino)
 
     def leerNombresArticulos(self, grafo):
