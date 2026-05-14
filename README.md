@@ -22,3 +22,25 @@ Se utiliza el dataset **Wiki-Topcats**, disponible en [Kaggle](https://www.kaggl
 | wiki-topcats_Categories.mtx | Relación entre artículos y categorías |
 | wiki-topcats_Category_names.txt | Nombres de las categorías |
 | wiki-topcats_pagenames.txt  | Nombres de los artículos |
+
+## Instalación y Uso
+
+### Con conda
+\```bash
+conda env create -f environment.yml
+conda activate taller1
+\```
+
+### Con pip
+\```bash
+pip install -r requirements.txt
+\```
+
+### Ejecutar
+\```bash
+python main.py
+\```
+
+## Requisitos
+- Python 3.11
+- matplotlib==3.10.8

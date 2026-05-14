@@ -1,0 +1,7 @@
+name: taller1
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - matplotlib=3.10.8
+  - pip
