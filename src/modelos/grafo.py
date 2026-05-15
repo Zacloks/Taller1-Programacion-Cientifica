@@ -246,3 +246,42 @@ class Grafo:
             
         ranking.sort(key=lambda x: x[1], reverse=True)
         return ranking[:top_n]
+    
+    #SubGrafo para guardar solo lo relacionado a futbol
+    def subGrafoFutbol(self):
+        subGrafo = Grafo()
+        articulos_validos = set()
+        
+        for idNodo, nodo in self.articulos.items():
+            for categoria in nodo.categorias:
+                if self.esCategoriaFutbol(categoria):
+                    articulos_validos.add(idNodo)
+                    break
+                
+        for idNodo in articulos_validos:
+            nodoOriginal = self.articulos[idNodo]
+            nuevoNodo = subGrafo.agregarNodo(idNodo)
+            nuevoNodo.nombre = nodoOriginal.nombre
+            
+            for categoria in nodoOriginal.categorias:
+                nuevoNodo.agregarCategoria(categoria)
+                
+        for idNodo in articulos_validos:
+            nodoOriginal = self.articulos[idNodo]
+            
+            for vecino in nodoOriginal.enlacesSalida:
+                if vecino in articulos_validos:
+                    subGrafo.agregarConexion(idNodo, vecino)
+                    
+        return subGrafo
+
+    def esCategoriaFutbol(self, nombre):
+        palabras_futbol = ["fifa", "uefa", "world_cup", "premier_league",
+                        "la_liga", "serie_a", "bundesliga", "soccer", "football_club"]
+        nombre = nombre.lower()
+        
+        for palabra in palabras_futbol:
+            if palabra in nombre:
+                return True
+            
+        return False

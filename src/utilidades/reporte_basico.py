@@ -136,3 +136,12 @@ class ReporteBasico:
         grafo.analizarDistribucionGrados(tipo="salida")
         
         print("\n" + "-" * 50)
+        
+        grafoFutbol = grafo.subGrafoFutbol()
+        ranking = grafoFutbol.pageRank()
+        
+        top = sorted(ranking.items(), key = lambda x: x[1], reverse = True)
+        
+        for idNodo, score in top[:20]:
+            nodo = grafoFutbol.articulos[idNodo]
+            print(nodo.nombre, score)

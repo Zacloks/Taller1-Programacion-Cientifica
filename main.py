@@ -30,6 +30,5 @@ def main():
     print("--- Resultados exportados a results/resultados_completos.txt ---")
 
     separador("Proceso Finalizado")
-
 if __name__ == "__main__":
     main()
