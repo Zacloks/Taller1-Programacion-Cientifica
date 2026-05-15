@@ -47,6 +47,17 @@ class ReporteBasico:
         else:
             lineas.append(f"Sin camino entre {id_orig} y {id_dest}")
 
+        lineas += ["", "=== Top 20 Artículos de Fútbol por PageRank Global ==="]
+        articulos_futbol_txt = []
+        for id_nodo, score in ranking.items():
+            nodo = grafo.articulos[id_nodo]
+            if any(grafo.esCategoriaFutbol(cat) for cat in nodo.categorias):
+                nombre_art = nodo.nombre if nodo.nombre else f"ID: {id_nodo}"
+                articulos_futbol_txt.append((nombre_art, score))
+        
+        articulos_futbol_txt.sort(key=lambda x: x[1], reverse=True)
+        for i, (nombre, score) in enumerate(articulos_futbol_txt[:20], start=1):
+            lineas.append(f"  {i}. {nombre} -> {score:.6f}")
         ruta = self.carpetaResultados / "resultados_completos.txt"
         ruta.write_text("\n".join(lineas) + "\n", encoding="utf-8")
         
@@ -135,13 +146,26 @@ class ReporteBasico:
         print("Grados de Salida")
         grafo.analizarDistribucionGrados(tipo="salida")
         
-        print("\n" + "-" * 50)
+        print("\n" + "="*15 + " SECCIÓN DE INVESTIGACIÓN: FÚTBOL " + "="*15)
         
-        grafoFutbol = grafo.subGrafoFutbol()
-        ranking = grafoFutbol.pageRank()
+        articulos_futbol = []
         
-        top = sorted(ranking.items(), key = lambda x: x[1], reverse = True)
+        for id_nodo, score in ranking.items():
+            nodo = grafo.articulos[id_nodo]
+            
+            if any(grafo.esCategoriaFutbol(cat) for cat in nodo.categorias):
+                nombre_art = nodo.nombre if nodo.nombre else f"ID: {id_nodo}"
+                articulos_futbol.append((nombre_art, score))
         
-        for idNodo, score in top[:20]:
-            nodo = grafoFutbol.articulos[idNodo]
-            print(nodo.nombre, score)
+        print(f" -> [Análisis] Total de artículos de fútbol detectados en el dataset: {len(articulos_futbol)}")
+        
+        articulos_futbol.sort(key=lambda x: x[1], reverse=True)
+        
+        print("\nTop 20 Artículos de Fútbol más influyentes (PageRank Global):")
+        print("-" * 65)
+        if articulos_futbol:
+            for i, (nombre, score) in enumerate(articulos_futbol[:20], start=1):
+                print(f"  {i:2d}. {nombre:<40} -> PR Global: {score:.6f}")
+        else:
+            print("  No se encontraron artículos que coincidan con los criterios establecidos.")
+        print("-" * 65)
