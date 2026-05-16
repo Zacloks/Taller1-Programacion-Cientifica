@@ -6,10 +6,19 @@ from pathlib import Path
 class Graficos:
     def __init__(self, carpetaResultados=None):
         if carpetaResultados is None:
-            self.carpetaResultados = Path(__file__).resolve().parent.parent.parent / "results"
+            self.carpetaResultados = Path(__file__).resolve().parent.parent.parent / "results" / "reporte_general"
         else:
             self.carpetaResultados = Path(carpetaResultados)
         self.carpetaResultados.mkdir(parents=True, exist_ok=True)
+
+    def generarTodos(self, grafo, puntajes_pagerank, ranking_categorias):
+        print("Generando gráficos generales...")
+        self.grafTopGradoEntrada(grafo)
+        self.grafDistribucionGrados(grafo, tipo="entrada")
+        self.grafTopPageRank(grafo, puntajes_pagerank)
+        self.grafTopCategorias(ranking_categorias)
+        self.grafTamanoCategorias(grafo)
+        print("Gráficos generales guardados en:", self.carpetaResultados)
 
     # --- Gráfico 1: Top 10 artículos por grado de entrada ---
     def grafTopGradoEntrada(self, grafo, cantidad=10):
@@ -98,15 +107,7 @@ class Graficos:
         plt.close()
         print(f"Gráfico guardado: {ruta}")
         return ruta
-
-    def generarTodos(self, grafo, puntajes_pagerank, ranking_categorias):
-        print("Generando gráficos...")
-        self.grafTopGradoEntrada(grafo)
-        self.grafDistribucionGrados(grafo, tipo="entrada")
-        self.grafTopPageRank(grafo, puntajes_pagerank)
-        self.grafTopCategorias(ranking_categorias)
-        print("Gráficos generados en:", self.carpetaResultados)
-    
+        
     # --- Gráfico 5: Top 10 categorías por cantidad de artículos ---
     def grafTamanoCategorias(self, grafo, cantidad=10):
         ranking = sorted(grafo.categorias.items(), key=lambda x: len(x[1]), reverse=True)[:cantidad]

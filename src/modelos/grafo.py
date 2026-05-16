@@ -47,52 +47,21 @@ class Grafo:
         lista = list(self.articulos.values())
         lista.sort(key = lambda nodo: nodo.gradoSalida(), reverse = True)
         return lista[:cantidad]
-    
-    def obtenerMayoresConexiones(self, n =10, tipo = "entrada"):
-        lista_grados_enlaces =  []
-        for nodo in self.articulos.values():
-            
-            if tipo == "entrada":
-                valor = nodo.gradoEntrada()
-            else:
-                valor = nodo.gradoSalida()
-            lista_grados_enlaces.append([valor, nodo])
-        
-        lista_grados_enlaces.sort(key = lambda x: x[0], reverse = True)
-        lista_resultado = []
 
-        for grado, nodo in lista_grados_enlaces[:n]:
-            lista_resultado.append(nodo)
-        return lista_resultado
-
-    def analizarDistribucionGrados(self, tipo = "entrada"):
+    def analizarDistribucionGrados(self, tipo="entrada"):
         distri = {}
         nodos_totales = len(self.articulos)
 
         if nodos_totales == 0:
-            return "El grafo esta vacio, no hay datos"
+            return {}
         
         for nodo in self.articulos.values():
-            if tipo == "entrada":
-                grado_actual = nodo.gradoEntrada()
-            else:
-                grado_actual = nodo.gradoSalida()
-            distri[grado_actual] = distri.get(grado_actual,0) +1
+            grado_actual = nodo.gradoEntrada() if tipo == "entrada" else nodo.gradoSalida()
+            distri[grado_actual] = distri.get(grado_actual, 0) + 1
 
-        grados_ordenados = list(distri.keys())
-        grados_ordenados.sort()
-        
-        for grad in grados_ordenados[:10]:
-            cantidad = distri[grad]
-            porcentaje = (cantidad / nodos_totales) * 100
-            print(f"Grado: {grad}, Cantidad articulos: {cantidad}, Porcentaje: {porcentaje:.2f}%")
-        
-        grado_maximo =  grados_ordenados[-1]
-        print(f"Grado maximo: {grado_maximo}, Cantidad articulos: {distri[grado_maximo]}")
         return distri
     
     def bfs(self, idInicio):
-        
         if idInicio not in self.articulos:
             return []
         
@@ -113,9 +82,7 @@ class Grafo:
         
         return ordenVisita
     
-    
     def dfs(self, idInicio):
-        
         if idInicio not in self.articulos:
             return[]
         
@@ -140,8 +107,7 @@ class Grafo:
                         
         return ordenVisita
     
-    #Funcion relacionada a exploracion de conectividad entre articulos
-    def esAlcanzable(self, idOrigen, idDestino): #Ver si de un articulo se puede llegar a otro
+    def esAlcanzable(self, idOrigen, idDestino):
         
         if idOrigen not in self.articulos or idDestino not in self.articulos:
             return False
@@ -162,8 +128,7 @@ class Grafo:
         
         return False
     
-    #Temporal: Falta aplicarle mejoras para encontrar caminos mas interesantes
-    def encontrarCaminosSimples(self, idOrigen, idDestino): 
+    def encontrarCamino(self, idOrigen, idDestino): 
         
         if idOrigen not in self.articulos or idDestino not in self.articulos:
             return []
@@ -196,7 +161,6 @@ class Grafo:
         
         return camino
     
-    #PageRank
     def pageRank(self, iteraciones = 20, damping = 0.85):
         cantidadNodos = len(self.articulos)
         
@@ -228,7 +192,7 @@ class Grafo:
             puntajes = nuevosPuntajes
         
         return puntajes
-    # Relacion de las categorias con los articulos mas importantes
+
     def ranking_categorias(self, puntajes_pagerank, top_n=10):
         cat_stats = {} 
     
@@ -247,7 +211,7 @@ class Grafo:
         ranking.sort(key=lambda x: x[1], reverse=True)
         return ranking[:top_n]
     
-    #SubGrafo para guardar solo lo relacionado a futbol
+    #Analisis futbol
     def subGrafoFutbol(self):
         subGrafo = Grafo()
         articulos_validos = set()
@@ -264,11 +228,10 @@ class Grafo:
             nuevoNodo.nombre = nodoOriginal.nombre
             
             for categoria in nodoOriginal.categorias:
-                nuevoNodo.agregarCategoria(categoria)
+                subGrafo.agregarCategoria(nuevoNodo, categoria)  # ← corregido
                 
         for idNodo in articulos_validos:
             nodoOriginal = self.articulos[idNodo]
-            
             for vecino in nodoOriginal.enlacesSalida:
                 if vecino in articulos_validos:
                     subGrafo.agregarConexion(idNodo, vecino)
@@ -277,11 +240,77 @@ class Grafo:
 
     def esCategoriaFutbol(self, nombre):
         palabras_futbol = ["fifa", "uefa", "world_cup", "premier_league",
-                        "la_liga", "serie_a", "bundesliga", "soccer", "football_club"]
+                "la_liga", "serie_a", "bundesliga", "soccer", "football_club",
+                "footballer", "football_player", "association_football",
+                "copa_america", "champions_league"]
         nombre = nombre.lower()
         
-        for palabra in palabras_futbol:
-            if palabra in nombre:
-                return True
-            
-        return False
+        return any(palabra in nombre for palabra in palabras_futbol)
+
+    def quienPuedeLlegarA(self, idDestino):
+        visitados = set()
+        cola = deque([idDestino])
+        
+        while cola:
+            actual = cola.popleft()
+            if actual not in visitados:
+                visitados.add(actual)
+                for vecino in self.articulos[actual].enlacesEntrada:
+                    if vecino not in visitados:
+                        cola.append(vecino)
+        
+        return visitados
+
+    def buscarPorNombre(self, nombre):
+        for id_nodo, nodo in self.articulos.items():
+            if nodo.nombre == nombre:
+                return id_nodo
+        return None
+
+    def topFutbolistasPorPageRank(self, puntajes_pagerank, top_n=10):
+        categorias_jugadores = [cat for cat in self.categorias 
+                                if cat.endswith("_footballers")
+                                and not cat.startswith("Expatriate")
+                                and not cat.startswith("Olympic")]
+        
+        futbolistas = set()
+        for cat in categorias_jugadores:
+            for nodo in self.categorias[cat]:
+                futbolistas.add(nodo.id)
+        
+        ranking = []
+        for id_nodo in futbolistas:
+            score = puntajes_pagerank.get(id_nodo, 0)
+            nodo = self.articulos[id_nodo]
+            ranking.append((nodo.nombre, score, id_nodo))
+        
+        ranking.sort(key=lambda x: x[1], reverse=True)
+        return ranking[:top_n]
+
+    def categoriasFutbolMasGrandes(self, top_n=10):
+        cats_futbol = {cat: nodos for cat, nodos in self.categorias.items() 
+                    if self.esCategoriaFutbol(cat)}
+        ranking = sorted(cats_futbol.items(), key=lambda x: len(x[1]), reverse=True)
+        return [(nombre, len(nodos)) for nombre, nodos in ranking[:top_n]]
+
+    def categoriasFutbolMasInfluyentes(self, puntajes_pagerank, top_n=10):
+        cats_futbol = {cat: nodos for cat, nodos in self.categorias.items() 
+                    if self.esCategoriaFutbol(cat)}
+        ranking = []
+        for nombre_cat, nodos in cats_futbol.items():
+            scores = [puntajes_pagerank.get(n.id, 0) for n in nodos]
+            promedio = sum(scores) / len(scores) if scores else 0
+            ranking.append((nombre_cat, promedio, len(nodos)))
+        ranking.sort(key=lambda x: x[1], reverse=True)
+        return ranking[:top_n]
+
+    def compararPageRankLocalVsGlobal(self, puntajes_global, puntajes_local, top_n=10):
+        comparacion = []
+        for id_nodo in self.articulos:
+            score_local = puntajes_local.get(id_nodo, 0)
+            score_global = puntajes_global.get(id_nodo, 0)
+            nodo = self.articulos[id_nodo]
+            comparacion.append((nodo.nombre, score_global, score_local))
+        
+        por_local = sorted(comparacion, key=lambda x: x[2], reverse=True)[:top_n]
+        return por_local
