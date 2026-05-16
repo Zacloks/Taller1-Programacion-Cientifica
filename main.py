@@ -14,7 +14,7 @@ def main():
     grafo = cargadorDatos.cargarGrafo()
 
     # Definir Variables
-    id_orig, id_dest = 1, 500
+    id_orig, id_dest = 1178488, 111
     camino = grafo.encontrarCamino(id_orig, id_dest)
     ranking = grafo.pageRank(iteraciones=15, damping=0.85)
     top_categorias = grafo.ranking_categorias(ranking, top_n=10)

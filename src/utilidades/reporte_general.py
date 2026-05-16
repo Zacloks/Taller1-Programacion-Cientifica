@@ -66,6 +66,22 @@ class ReporteGeneral:
             print(f"No hay camino entre {id_orig} y {id_dest}")
 
         print()
+        print("Recorrido BFS")
+        print("-" * 20)
+        resultBFS = grafo.bfs(id_orig)
+        print(f"Cantidad de nodos visitados: {len(resultBFS)}")
+        print("Nodos Visitados: ")
+        print(" -> ".join(map(str, resultBFS[:15])))
+            
+        print()
+        print("Recorrido DFS")
+        print("-" * 20)
+        resultDFS = grafo.dfs(id_orig)
+        print(f"Cantidad de nodos visitados: {len(resultDFS)}")
+        print("Nodos Visitados:")
+        print(" -> ".join(map(str, resultDFS[:15])))
+        
+        print()
         print("Distribucion")
         print("-" * 30)
         print(f"Cantidad de Articulos Analizados: {resumenGrafo['Articulos']}")
@@ -92,6 +108,8 @@ class ReporteGeneral:
         self.carpetaResultados.mkdir(parents=True, exist_ok=True)
         resumen = grafo.resumen()
         top_pagerank = sorted(ranking.items(), key=lambda x: x[1], reverse=True)[:10]
+        resultDFS = grafo.dfs(id_orig)
+        resultBFS = grafo.bfs(id_orig)
 
         lineas = ["Reporte General - Red de Wikipedia", "=" * 50, "",
                   "=== Resumen del Grafo ===",
@@ -129,6 +147,16 @@ class ReporteGeneral:
         else:
             lineas.append(f"Sin camino entre {id_orig} y {id_dest}")
 
+        lineas += ["", "=== Recorrido BFS ==="]
+        lineas.append(f"Cantidad de nodos visitados: {len(resultBFS)}")
+        lineas.append("Nodos Visitados: ")
+        lineas.append(" -> ".join(map(str, resultBFS[:15])))
+            
+        lineas += ["", "=== Recorrido DFS ==="]
+        lineas.append(f"Cantidad de nodos visitados: {len(resultDFS)}")
+        lineas.append("Nodos Visitados:")
+        lineas.append(" -> ".join(map(str, resultDFS[:15])))        
+        
         ruta = self.carpetaResultados / "reporte_general.txt"
         ruta.write_text("\n".join(lineas) + "\n", encoding="utf-8")
         print("--- Reporte exportado a results/reporte_general/reporte_general.txt ---")
